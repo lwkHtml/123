@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			var date = new Date();
+			
+			document.write("年 "+date.getFullYear()+"</br>");
+			document.write("月 "+(date.getMonth()+1)+"</br>");
+			document.write("日 "+date.getDate()+"</br>");
+			document.write("时 "+date.getHours()+"</br>");
+			document.write("分 "+date.getMinutes()+"</br>");
+			document.write("秒 "+date.getSeconds()+"</br>");
+			document.write("毫秒 "+date.getMilliseconds()+"</br>");
+			document.write("秒 "+date.getTime()+"</br>");
+			document.write(date.toString()+"</br>");
+			document.write(date.toUTCString()+"</br>");
+			
+			date.setFullYear(1970);
+			date.setUTCMonth(0);
+			date.setUTCDate(1);
+			date.setUTCHours(0);
+			date.setUTCMinutes(0);
+			date.setUTCSeconds(0);
+			date.setUTCMilliseconds(0)
+			document.write(date.getTime()+"</br>");
+			
+			document.write(date.toUTCString());
+		</script>
+	</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		
+		<input type="text" name="cv" id="cv" value="" />
+		<input type="button" id="save" value="save" />
+		<input type="button" id="get" value="get" />
+		<input type="button" id="clear" value="clear" />
+		
+		
+		<script type="text/javascript">
+			console.log(document.cookie);
+			
+			function savecookie(name,value,expires){
+				value = escape(value);
+				var date = new Date();
+				var d = date.getDate();
+				d=d+expires;
+				date.setDate(d);
+				
+				if(name)
+				{
+					document.cookie = name+"="+value +((expires)?";expires="+date.toString():"");
+				}
+			}
+			
+			function getcookie(name){
+				var length = document.cookie.length;
+				console.log(length);
+				if(length!=0)
+				{
+					var start = document.cookie.indexOf(name);
+					var end = document.cookie.indexOf(";",start);
+					console.log(start);
+					console.log(end);
+					
+					if(end==-1)
+					{
+						start=start+(name+"=").length;
+						var r =document.cookie.substring(start,length);
+						console.log(unescape(r));
+						return unescape(r);
+					}
+					else{
+						start=start+(name+"=").length;
+						console.log(start);
+						var r =document.cookie.substring(start,end);
+						console.log(unescape(r));
+						return unescape(r);
+					}
+				}
+			}
+			
+			document.getElementById("save").onclick = function(){
+				var value =document.getElementById("cv").value;
+				savecookie("mycookie1",value,7);
+			}
+			
+			document.getElementById("get").onclick = function(){
+				getcookie("name");
+			}
+			
+			document.getElementById("clear").onclick = function(){
+				savecookie("name","",-1);
+			}
+		</script>
+	</body>
+</html>

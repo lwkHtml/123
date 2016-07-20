@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<input type="text" id="cookie" />
+		<input type="button" name="save" id="save" value="save" />
+		<input type="button" name="get" id="get" value="get" />
+		<input type="button" name="remove" id="remove" value="remove" />
+
+		<script>
+			console.log(document.cookie);
+			document.getElementById("save").onclick=function(){
+				var val = document.getElementById("cookie").value;
+				savecookie("mycookie",val,7);
+			}
+			
+			document.getElementById("get").onclick = function(){
+				alert(getcookie("mycookie"));
+			}
+			document.getElementById("remove").onclick = function(){
+				savecookie("mycookie","",-1);
+			}
+			
+			function savecookie(name,value,expires)
+			{
+				var date = new Date();
+				date.setDate(date.getDate()+expires);
+				if(name!="")
+				{
+//					if(expires!="")
+//					{
+//						document.cookie = "name="+escape(value)+";expires="+date.toString();
+//					}
+//					else{
+//						document.cookie = "name="+escape(value);
+//					}
+					
+					document.cookie = name+"="+escape(value)+((expires=="")?"":";expires="+date.toString());
+				}
+			}
+			
+			function getcookie(name){
+				if(document.cookie.length!=0)
+				{
+					var start = document.cookie.indexOf(name);
+					
+					if(start!=-1)
+					{
+						start = start+(name+"=").length;
+						var end = document.cookie.indexOf(";",start);
+						if(end!=-1)
+						{
+							var str = document.cookie.substring(start,end);	
+							return unescape(str);
+						}
+						else{
+							end = document.cookie.length;
+							var str = document.cookie.substring(start,end);
+							return unescape(str);
+						}
+					}
+					else{
+						return "null";
+					}
+				}
+				else{
+					return "null";
+				}
+			}
+		</script>
+	</body>
+</html>
