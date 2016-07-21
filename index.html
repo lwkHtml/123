@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title>别点白块</title>
+		<link rel="stylesheet" type="text/css" href="css/reset.css" />
+		<style type="text/css">
+			.box {
+				width: 400px;
+				border: 2px solid #ccc;
+				box-shadow: 0 0 5px;
+				margin: 20px auto;
+				padding: 15px;
+				border-radius: 10px;
+				text-align: center;
+			}
+			
+			.box p {
+				color: #000;
+				font-size: 16px;
+				margin: 10px;
+				line-height: 20px;
+			}
+			
+			.box1 {
+				position: relative;
+				height: 560px;
+				overflow: hidden;
+			}
+			
+			.box ul {
+				height: 640px;
+				position: relative;
+				top: -80px;
+				left: 0;
+			}
+			
+			#head {
+				width: 400px;
+				height: 80px;
+				position: absolute;
+				top: 80px;
+				z-index: 0;
+			}
+			
+			.box li {
+				overflow: hidden;
+				position: absolute;
+				z-index: 99;
+				height: 400px;
+				height: 80px;
+			}
+			
+			.box span {
+				float: left;
+				width: 80px;
+				height: 80px;
+				display: block;
+				cursor: pointer;
+			}
+			
+			.box .b {
+				background: #000;
+			}
+			
+			.box .w {
+				background: #fff;
+			}
+			
+			#btn1 {
+				width: 50px;
+				height: 30px;
+				font-size: 14px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="box">
+			<p>得分：<em>0</em></p>
+			<div class="box1">
+				<ul>
+					<div id="head">
+					</div>
+				</ul>
+			</div>
+			<input type="button" id="btn1" value="开始" />
+		</div>
+		<script type="text/javascript" src="js/base.js"></script>
+		<script type="text/javascript">
+			var w = getClass("w");
+			var b = getClass("b");
+			var arr = ["w", "b"];  //白黑块生成概率 待优化
+			var len = arr.length;
+			var p = document.getElementsByTagName("p")[0];
+			var em = p.getElementsByTagName("em");
+			var btn1 = getId("btn1");
+			var flag = [1, 1, 1, 1];   //判断通道
+			var times = null; //定时器
+			var interlude = 50;  //定时器的时间间隙
+			var speed = [2, 4, 8, 80];   //速度分级			
+			var x = 0;
+			function startAll(n1, n2, n3, n4) {
+				var ul = document.getElementsByTagName("ul")[0];
+				var head = document.getElementById("head");
+				var iHight = head.offsetHeight; // 新建li的高度
+				// 判断每一次创建li的速度
+				if (flag[3]) {
+					x += n4  // 预加载速度
+				} else if (flag[1]) {  //第一次速度变级
+					x += n1;
+				} else if (x % 4 != 0) { // 判断速度变级时 是否需要协调
+					x += 2;
+				} else if (flag[2]) { //第二次速度变级
+					x += n2;
+				} else if (x % 8 != 0) { //同样判断速度变级时 是否需要协调
+					x += 4;
+				} else {
+					x += n3; //第三次速度变级
+				}
+				// 添加li
+				if ((x % iHight) == 0) {
+					var oLi = document.createElement("li"); // 创建 li
+					oLi.innerHTML = "<span class='" + arr[parseInt(Math.random() * len)] //在li里加上5个随机的黑白块
+					+ "'></span><span class='" + arr[parseInt(Math.random() * len)] 
+					+ "'></span><span class='" + arr[parseInt(Math.random() * len)] 
+					+ "'></span><span class='" + arr[parseInt(Math.random() * len)] 
+					+ "'></span><span class='" + arr[parseInt(Math.random() * len)] + "'></span>";
+					ul.insertBefore(oLi, head); //把li添加到 ul 和head 之间
+					var oLiTop = 0;
+					var timess = setInterval(function() {
+						//判断新添加的li的移动速度
+						if (flag[3]) {
+							oLiTop += n4;  //加载速度
+						} else if (flag[1]) {
+							oLiTop += n1; //第一次速度变级
+						} else if (flag[2]) {
+							oLiTop += n2; //第二次速度变级
+						} else {
+							oLiTop += n3; //第三次速度变级
+						}
+						oLi.style.top = oLiTop + "px"; //改变li的top值 ， 模拟动画效果
+						// 判断 li是否到达底部
+						if (oLiTop >= iHight*8) {
+							clearInterval(timess); //清除定时器，优化内存
+							//  到达时判断是否有白块存在
+							var p7 = oLi.getElementsByClassName("b");
+							//  游戏结束
+							if (p7.length > 0) {
+								alert("游戏结束,你的得分为" + em[0].innerHTML);
+								window.location = "";
+							}
+							oLi.remove(); //清除li ， 优化内存
+						}
+					}, interlude)
+				}
+				// 黑块点击事件
+				for (var i = 0; i < b.length; i++) {
+					b[i].onclick = function() {
+						this.className = "w"; //点击是把黑块变成白块
+						em[0].innerHTML = parseInt(em[0].innerHTML) + 5; //得分
+
+					}
+				}
+				// 白块点击事件（游戏结束）
+				for (var i = 0; i < w.length; i++) {
+					w[i].onclick = function() {
+						alert("游戏结束,你的得分为" + em[0].innerHTML);
+						window.location = "";
+					}
+				}
+			}
+			//开始游戏按钮点击事件
+			btn1.onclick =  toLoad;  
+			function toLoad() {
+					if (flag[0]) { // 判断是否开始游戏
+						var i = 0; //预加载的判断数值
+						times = setInterval(function() {
+							if (parseInt(em[0].innerHTML) == 50) {
+								flag[1] = 0; //第一次速度变级的判断通道关闭
+							}
+							if (parseInt(em[0].innerHTML) == 100) {
+								flag[2] = 0; //第二次速度变级的判断通道关闭
+							}
+							if (i >= 4) { //判断是否达到预加载li的行数
+								flag[3] = 0; //预加载速度判断通道关闭
+							}
+							i++;
+							startAll(speed[0], speed[1], speed[2], speed[3]);
+						}, interlude)
+					}
+					flag[0] = 0; //开始游戏按钮点击事件判断通道关闭
+				}
+		</script>
+	</body>
+</html>
