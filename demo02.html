@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>作用域</title>
+	</head>
+	<body>
+		<script>
+		//要理解闭包，就要先理解javascript特殊的变量作用域，全局变量和局部变量
+		//函数内部可以读取全局变量，函数外部无法读到函数内部的局部变量 
+		//!!!!!声明变量的时候一定要使用var，不使用var定义的变量实际是声明一个全局变量
+			var num = 11;
+			function aa(){
+				num2 = 13;
+				alert(num);
+			}
+//			aa();
+//			alert(num2);
+//			局部方法可以访问到外部或父类的属性
+
+			//现在我想在外部访问函数内部的局部变量
+//			在函数内部定义一个函数，那么这函数就能访问到这个外部函数的局部变量
+//			子级对象会一级一级向上寻找所有父对象的变量，所以父对象的所有变量对子对象都是可见的
+//			那么这时候，如果我把内部函数当做返回值，那么这个函数的局部变量就可以在外部访问到了
+		
+		var name = "The Window";
+	　　var object = {
+	　　　　name : "My Object",
+	　　　　getNameFunc : function(){
+//				alert(this.name);
+				var that = this;
+	　　　　　　return function(){
+	　　　　　　　　return that.name;
+	　　　　　　};
+	　　　　}
+	　　};
+	　　alert(object.getNameFunc()());
+		</script>
+	</body>
+</html>

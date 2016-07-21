@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<script>
+//  		javascript预处理，在javascript解释之前会先进行预编译
+//			在预编译的时候，会把定义式的函数优先执行，也会把所有的var变量创建，默认值为undefined
+			var a = "Javascript";
+//			console.log(a);
+//			console.log(b);
+			var b = 10;
+			function f1(){
+				var a = 10;
+				console.log(a);
+			}
+//			f1();
+//			f2();
+//			f3();
+//			f4();
+			function f2(){
+				var a = 15;
+				console.log(a);
+			}
+			var f3 = function(){
+				var a = 20;
+				console.log(a);
+			}
+		</script>
+		<script>
+			function f4(){
+				alert(1111);
+			}
+//		但是如果把函数定义在不同的script标签下，或者是外部引用的不同的js文件下的话，js引擎也就不会把他们放到一起进行预编译了
+		</script>
+		<script>
+		    var num = 20;
+			function f5(){
+				console.log(num);  //变量提升
+				var num = 25;
+			}
+			f5();
+		</script>
+		
+	</body>
+</html>

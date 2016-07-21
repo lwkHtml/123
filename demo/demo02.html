@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		
+	</head>
+	<body>
+		<script>
+			function  aa(){
+				var a = 10;
+				alert(1);
+				function bb(){
+					a++
+					alert(a);
+				}
+				return bb;
+			}
+//			console.log(aa());
+//			aa()();
+			var c = aa();
+			c();
+			c();
+//			aa()();
+//			aa()();
+//			var bb = function(){
+//				alert(2);
+//			}
+//			bb();
+//			aa()();
+		</script>
+		
+	</body>
+</html>

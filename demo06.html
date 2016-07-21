@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>自执行函数</title>
+	</head>
+	<body>
+		<script>
+//			var a = 10;
+//			(function(){
+//				var a = 15;
+//				alert(a);
+//			})()
+//			alert(a);
+//			自执行函数，函数
+			
+			var b = 10;
+			(function(){
+				var b = 15;
+				alert(b);
+			})();
+//			报错，因为解析器在解析全局的function或者function内部的function关键字的时候，默认是function声明
+//			而不是function表达式。不过不告诉编译器，会默认生成一个缺少名字的function
+//			(function(){})()将匿名函数声明加括号,这时候就会自执行
+		</script>
+	</body>
+</html>
